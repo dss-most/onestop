@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="layout/mainLayout">
+<head>
+<title>MSTQ</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+	<div layout:fragment="content">
+	
+
+	
+		<div class="row"  style="margin-top:-40px;">
+			<div class="section-title">
+				<h1>บริการด้านการทดสอบ สอบเทียบ</h1>
+			</div>
+		</div>
+	
+		<div class="row">
+		
+		
+		<div class="col-md-2">
+		<div class="team-member">
+			<!-- Team Member Photo -->
+			<div class="team-member-image"><img alt="Name Surname" th:src="@{/static/graphics/testing-head.png}"></div>
+			<div class="team-member-info">
+				<div class="headlineLink">
+					<a href="#" th:href="@{/testingService}">ทดสอบผลิตภัณฑ์ </a>	
+				</div>				
+				
+			</div>
+		</div>
+		</div>
+		
+		<div class="col-md-2">
+		<div class="team-member">
+			<!-- Team Member Photo -->
+			<div class="team-member-image"><img alt="Name Surname" th:src="@{/static/graphics/calibration-head.png}"></div>
+			<div class="team-member-info">
+				<div class="headlineLink">
+					<a href="#">สอบเทียบเครื่องมือ</a>
+				</div>
+			</div>
+		</div>
+		</div>
+		
+		<div class="col-md-2">
+		<div class="team-member">
+			<!-- Team Member Photo -->
+			<div class="team-member-image"><img alt="Name Surname" src="img/team/1.jpg" th:src="@{/static/graphics/sciencepark.jpg}"></div>
+			<div class="team-member-info">
+				<div class="headlineLink">
+					<a href="http://www.sciencepark.or.th">ตรวจสอบสถานะงาน</a>
+				</div>
+			</div>
+		</div>
+		</div>
+
+		<div class="col-md-2">
+		<div class="team-member">
+			<!-- Team Member Photo -->
+			<div class="team-member-image"><img alt="Name Surname" src="img/team/1.jpg" th:src="@{/static/graphics/softinfra.jpg}"></div>
+			<div class="team-member-info">
+				<div class="headlineLink">
+					<a href="#">ประวัติการรับบริการ</a>
+				</div>
+			</div>
+		</div>
+		</div>
+		
+		<div class="col-md-2">
+		<div class="team-member">
+			<!-- Team Member Photo -->
+			<div class="team-member-image"><img alt="Name Surname" src="img/team/1.jpg" th:src="@{/static/graphics/stdb-head.png}"></div>
+			<div class="team-member-info">
+				<div class="headlineLink">
+					<a href="http://stdb.most.go.th/">จัดการที่อยู่</a>
+				</div>
+			</div>
+		</div>
+		</div>
+		
+		<div class="col-md-2">
+		<div class="team-member">
+			<!-- Team Member Photo -->
+			<div class="team-member-image"><img alt="Name Surname" src="img/team/1.jpg" th:src="@{/static/graphics/map-head.png}"></div>
+			<div class="team-member-info">
+				<div class="headlineLink">
+					<a href="#" th:href="@{/web/page/gisService}">คู่มีอการให้บริการ</a>
+				</div>
+			</div>
+		</div>
+		</div>
+		
+	</div>
+	
+	
+	</div>
+	
+	<div layout:fragment="pageScript">
+						
+<script type="text/javascript" th:inline="javascript">
+
+//-->
+</script>	
+			
+			
+			
+	</div>
+</body>
+</html>
