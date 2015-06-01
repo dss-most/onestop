@@ -180,6 +180,27 @@
 	</dependencies>
 	
 	<build>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<includes>
+					<include>application.properties</include>
+					<include>messages.properties</include>
+					<include>logback.xml</include>
+				</includes>
+				<filtering>true</filtering>
+			</resource>
+			<resource>
+				<directory>src/main/resources/</directory>
+				<includes>
+					<include>**/*</include>
+				</includes>
+				<filtering>false</filtering>
+			</resource>
+	    </resources>
+		<filters>
+	    	<filter>src/main/resources/config/${env}.properties</filter>
+	    </filters> 
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
@@ -211,5 +232,21 @@
 			</plugin>
 		</plugins>
 	</build>
-
+	<profiles>
+		<profile>
+			<id>prod-environment</id>
+				 <properties>
+					<env>production</env>
+				</properties>
+		</profile>
+		<profile>
+			<id>dev-environment</id>
+				<activation>
+					<activeByDefault>true</activeByDefault>
+				</activation>
+	    		<properties>
+				<env>development</env>
+			</properties>
+		</profile>
+	</profiles>
 </project>
