@@ -16,21 +16,15 @@ var AppRouter = Backbone.Router.extend({
 		
 	},
 	routes: {
-        "newOrgnazationNetwork" : "newForm",
+        "newRFQ" : "newForm",
         "search" : "search",
         "OrganizationNetwork/:id" : "editForm",
         "*actions": "defaultRoute" // Backbone will try match the route above first
     },
     
     defaultRoute: function(action) {
-    	// no table result
-    	this.tableResultView.$el.empty();
+    	this.newForm();
     	
-    	// no form
-    	this.formView.$el.empty();
-
-    	// show search
-    	this.searchView.render();  	
     },
     searchWithModelAndPage: function(model, pageNum) {
     	// now table result
@@ -52,7 +46,7 @@ var AppRouter = Backbone.Router.extend({
     newForm: function() {
     	this.tableResultView.$el.empty();
     	this.searchView.$el.empty();
-    	this.$breadcrubmEl.html(this.newFormBreadCrumb());
+    	//this.$breadcrubmEl.html(this.newFormBreadCrumb());
     	
     	this.formView.newForm();
     },
@@ -262,15 +256,15 @@ var TableResultView = Backbone.View.extend({
 });
 
 var FormView = Backbone.View.extend({
+	/**
+	 * @memberOf FormView
+	 */
 	 initialize: function(options){
+		 this.formViewTemplate = Handlebars.compile($("#formViewTemplate").html());
 	 },
 	 events: {
 		 "change .formSlt": "onChangeFormSlt",
 		 "change .formTxt" : "onChangeTxtSlt",
-		 
-		 "click #newPersonBtn" : "onClickNewPersonBtn",
-		 "click .removePersonBtn" : "onClickRemovePersonBtn",
-		 "click .editPersonBtn" : "onClickEditPersonBtn",
 		 
 		"click #saveFormBtn" : "onClickSaveFormBtn",
 		"click #backBtn" : "onClickBackBtn"
@@ -322,31 +316,6 @@ var FormView = Backbone.View.extend({
 	
 	onClickBackBtn: function(e) {
 		appRouter.navigate("search", {trigger: true});
-	},
-	onClickEditPersonBtn: function(e) {
-		var index=$(e.currentTarget).parents('tr').attr('data-index');
-    	var person = this.model.get('medicalStaffs').at(index);
-    	
-    	this.personModalView.setCurrentOrganizationNetwork(this.model);
-    	this.personModalView.setCurrentPersonAndRender(person);
-   	},
-	onClickRemovePersonBtn: function(e) {
-		var index=$(e.currentTarget).parents('tr').attr('data-index');
-		var item = this.model.get('medicalStaffs').at(index);
-		
-		var r = confirm('คุณต้องการลบรายการบุคลากรทางการแพทย์ ' + item.get('name'));
-		if (r == true) {
-			this.model.get('medicalStaffs').remove(item);
-			this.renderPersonTbl();
-		} else {
-		    return false;
-		} 
-		
-		return false;
-	},
-	onClickNewPersonBtn: function(e) {
-		this.personModalView.setCurrentOrganizationNetwork(this.model);
-		this.personModalView.newPersonAndRender();
 	},
 	onChangeTxtSlt : function(e) {
 		var value = $(e.currentTarget).val();
@@ -420,7 +389,7 @@ var FormView = Backbone.View.extend({
 	
 	newForm: function() {
 		this.modelId = null;
-		this.model = new smt.Model.OrganizationNetwork();
+		this.model = new App.Models.Rfq();
 		
 		this.render();
 	},
@@ -446,52 +415,11 @@ var FormView = Backbone.View.extend({
 	},
 	render: function() {
 		var json={};
-		json.model = this.model.toJSON();
+		json.model={};
+		//json.model = this.model.toJSON();
 		
-		if(this.model.get('id') == null) {
-			json.networkTypes=new Array();
-			json.networkTypes.push({id:0,description: 'กรุณาเลือกประเภทเครือข่าย'});
-			$.merge(json.networkTypes, networkTypes.toJSON());
-			
-			json.orgTypes=new Array();
-			json.orgTypes.push({id:0,description: 'กรุณาเลือกประเภทหน่วยงาน'});
-			$.merge(json.orgTypes, orgTypes.toJSON());
-			
-			json.healthZones=new Array();
-			json.healthZones.push({id:0,name: 'กรุณาเลือกเขตบริการสุขภาพ'});
-			$.merge(json.healthZones, healthZones.toJSON());
-			
-			json.provinces=new Array();
-			json.provinces.push({id:0,name: 'กรุณาเลือกจังหวัด'});
-			
-			json.amphurs=new Array();
-			json.amphurs.push({id:0,name: 'กรุณาเลือกอำเภอ'});
-		} else {
-			json.networkTypes=new Array();
-			$.merge(json.networkTypes, networkTypes.toJSON());
-			 __setSelect(json.networkTypes, this.model.get('networkType'));
-			
-			json.orgTypes=new Array();
-			$.merge(json.orgTypes, orgTypes.toJSON());
-			__setSelect(json.orgTypes, this.model.get('orgType'));
-			
-			json.healthZones=new Array();
-			$.merge(json.healthZones, healthZones.toJSON());
-			__setSelect(json.healthZones, this.model.get('zone'));
-			
-			json.provinces=new Array();
-			$.merge(json.provinces, this.provinces.toJSON());
-			__setSelect(json.provinces, this.model.get('province'));
-			
-			json.amphurs=new Array();
-			$.merge(json.amphurs, this.amphurs.toJSON());
-			__setSelect(json.amphurs, this.model.get('amphur'));
-		}
-		
-		console.log(json);
 		this.$el.html(this.formViewTemplate(json));
 		
-		this.renderPersonTbl();
 		return this;
 	}
 });

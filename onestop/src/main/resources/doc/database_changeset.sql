@@ -8,7 +8,7 @@ insert into app_info VALUES ('DATABASE_VERSION', '1');
 
 create SEQUENCE RFQ_SEQ;
 
-create sequence RFQ_ITEM_SEQ;
+
 
 create TABLE RFQ (
         id number(19,0) not null,
@@ -18,16 +18,22 @@ create TABLE RFQ (
 		CUSTOMER_NAME	varchar2(500),
 		COMPANY_NAME	varchar2(500),
 		TITLE		varchar2(500),
-		ADDR_LINE1	varchar2(500),
-		ADDR_LINE2 	varchar2(500),
+		Address1	varchar2(500),
+		ADDRESS2 	varchar2(500),
 		DISTRICT_ID	number(19,0),
 		PROVINCE_ID number(19,0),
 		ZIPCODE		varchar2(100),
-		PHONE		varchar2(100),
+		TELEPHONE		varchar2(100),
 		FAX			varchar2(100),
 		EMAIL		varchar2(100),
 		MOBILE		varchar2(100),
-		REASON		varchar2(500),
+		REMARKS		clob,
+		TEST_METHOD	CLOB,
+		SAMPLE_DESC	varchar2(1000),
+		RFQ_DATE	timestamp,
+		has_Sent_Before NUMBER(1),
+		REFERENCE	varchar2(100),
+		
 	
 		QUOTATION_ID	number(19,0),
 		LAB_REQ_ID		number(19,0),
@@ -43,6 +49,9 @@ create TABLE RFQ (
         CONSTRAINT fk_RFQ_QUOTATION FOREIGN KEY (QUOTATION_ID) REFERENCES QUOTATION_TCS3(ID),
         CONSTRAINT fk_RFQ_REQUEST FOREIGN KEY (LAB_REQ_ID) REFERENCES LAB_REQUEST(REQ_ID)
 );
+
+
+create sequence RFQ_ITEM_SEQ;
 
 create TABLE QFQ_ITEM (
         id number(19,0) not null,

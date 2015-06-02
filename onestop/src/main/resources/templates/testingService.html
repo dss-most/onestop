@@ -97,8 +97,110 @@
 </div>
 
 </script>
-			
-			
+
+<script id="formViewTemplate" type="text/x-handlebars-template">
+<div class="col-md-12">
+	<form class="form-horizontal" role="form">
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<b><i class="fa fa-pencil-square-o"></i> ขอใบเสนอราคาทดสอบผลิตภัณฑ์</b>
+		</div>
+		<div class="panel-body">
+			<div class="row">
+				<div class="col-md-12 mainService">
+					<h2>ขั้นตอนแรก: ข้อมูลเพื่อการติดต่อกลับ</h2>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12">
+					{{txtInput model "customerName" "ชื่อผู้ขอใบเสนอราคา:" 2 10 "readwrite"}}
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12">
+					{{txtInput model "companyName" "บริํษัท/หน่วยงาน:" 2 10 "readwrite"}}
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-md-12">
+					{{txtInput model "address1" "ที่อยู่:" 2 10 "readwrite"}}
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12">
+					{{txtInput model "address2" "" 2 10 "readwrite"}}
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-6">
+					{{txtInput model "phone" "เบอร์โทรศัพท์:" 4 8 "readwrite"}}
+				</div>
+				<div class="col-md-6">
+					{{txtInput model "fax" "เบอร์โทรสาร:" 4 8 "readwrite"}}
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12">
+					{{txtInput model "email" "email:" 2 10 "readwrite"}}
+				</div>
+			</div>
+
+
+			<div class="row">
+				<div class="col-md-12 mainService">
+					<h2>ขั้นตอนที่สอง: รายละเอียดผลิตภัณฑ์ที่ต้องการทดสอบ</h2>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12">
+					{{txtInput model "sampleDesc" "ลักษณะตัวอย่างที่จะส่งทดสอบ:" 2 10 "readwrite"}}
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12">
+					<div class="form-group">
+    					<label for="hasSentBefore" class="col-sm-2 control-label">เคยส่งมาทดสอบ:</label>
+    					<div class="col-sm-10 form-inline">
+      						<label class="radio-inline">
+  								<input type="radio" data-field="hasSentBefore" name="hasSentBeforeRdo" value="0"> ไม่เคย
+							</label>
+							<label class="radio-inline">
+  								<input type="radio" data-field="hasSentBefore" name="hasSentBeforeRdo" value="1"> เคย โปรดระบุหมายเลขปฎิบัติการหรือใบเสนอราคาที่อ้างอิง
+							</label>
+						
+								<input type="text" id="referenceTxt" data-field="reference" class="form-control formTxt"></input>
+
+						
+				    	</div>
+					</div>					
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12 mainService">
+					<h2>ขั้นตอนที่สาม: รายละเอียดการทดสอบหรือวิธีการที่ต้องการทดสอบ</h2>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12">
+					{{txtAreaInput model "testingDesc" "รายละเอียดการทดสอบ:" 2 10 "readwrite"}}
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12">
+					{{txtAreaInput model "remark" "รายละเอียดอื่นๆ:" 2 10 "readwrite"}}
+				</div>
+			</div>
+		</div>
+		<div class="panel-footer">
+			<button id="saveFormBtn" type="button" class="btn btn-default"><i class="fa fa-floppy-o"></i> ส่งคำร้องใบเสนอราคา</button>
+			<button id="clearFormBtn" type="button" class="btn btn-default"><i class="fa fa-times-circle"></i> ล้างข้อมูล</button>
+		</div>
+	</div>
+</div>
+</script>
+
+
 <script type="text/javascript" th:inline="javascript">
 //<!--
 $( document ).ready(function() {
