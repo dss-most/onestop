@@ -24,7 +24,7 @@ var AppRouter = Backbone.Router.extend({
     },
     
     defaultRoute: function(action) {
-    	this.newForm();
+    	this.search();
     	
     },
     searchWithModelAndPage: function(model, pageNum) {
@@ -33,7 +33,7 @@ var AppRouter = Backbone.Router.extend({
     },
     search: function() {
     	// set breadcrumb
-    	this.$breadcrubmEl.html(this.defaultBreadCrumb());
+    	//this.$breadcrubmEl.html(this.defaultBreadCrumb());
 
     	// show search
     	this.searchView.render();
@@ -77,6 +77,7 @@ var SearchView = Backbone.View.extend({
     initialize: function(options){
     	this.searchViewTemplate = Handlebars.compile($("#searchViewTemplate").html());
     	
+    	this.searchModel = new App.Models.Rfq(); 
     },
     
     events: {
@@ -171,12 +172,13 @@ var SearchView = Backbone.View.extend({
 
 var TableResultView = Backbone.View.extend({ 
 	initialize: function(options){
-	
-
+		this.tableResultViewTemplate = Handlebars.compile($("#tableResultViewTemplate").html());
+		
+		this.searchModel = new App.Models.Rfq(); 
+		this.searchResults = new App.Pages.Rfqs();
 	},
 	events: {
-		"click .editOrganizationNetworkBtn" : "onClickEditOrganizationNetworkBtn",
-		"click .removeOrganizationNetworkBtn" : "onClickremoveOrganizationNetworkBtn",
+		"click .editBtn" : "onClickEditBtn",
 		
     	"click .btnPageNav" : "onClickBtnPageNav",
     	"change #pageNavTxt" : "onChangePageNavTxt"
@@ -205,31 +207,10 @@ var TableResultView = Backbone.View.extend({
     		this.renderWithPage(pageNum);
     	}
     },
-	onClickremoveOrganizationNetworkBtn: function(e) {
-		var organizationNetworkId = $(e.currentTarget).parents('tr').attr("data-id");
-		
-		var orgNetwork = smt.Model.OrganizationNetwork.findOrCreate({id: organizationNetworkId});
-		
-		var r = confirm('คุณต้องการลบรายการ' + orgNetwork.get('orgName'));
-		if (r == true) {
-			orgNetwork.destroy({
-				success: function(model, response) {
-					alert("ลบข้อมูลเรียบร้อยแล้ว")
-					appRouter.search();
-				}
-			});
-			
-			
-		} else {
-		    return false;
-		} 
-		
-		
-	},
 	
-	onClickEditOrganizationNetworkBtn: function(e) {
-		var organizationNetworkId = $(e.currentTarget).parents('tr').attr("data-id");
-		appRouter.navigate("OrganizationNetwork/"+organizationNetworkId, {trigger: true});
+	onClickEditBtn: function(e) {
+		var rfqId = $(e.currentTarget).parents('tr').attr("data-id");
+		appRouter.navigate("showRFQ/"+rfqId, {trigger: true});
 	},
 	
 	renderWithSearchModel: function(searchModel, pageNum) {
@@ -246,7 +227,7 @@ var TableResultView = Backbone.View.extend({
 	render: function() {
 		if(this.searchModel != null) {
 			this.searchResults.fetch({
-				url: appUrl('OrganizationNetwork/search/page/' + this.pageNum),
+				url: appUrl('Rfq/search/page/' + this.pageNum),
 	    		type: 'POST',
 	    		data: JSON.stringify(this.searchModel.toJSON()),
 	    		dataType: 'json',
@@ -269,8 +250,10 @@ var FormView = Backbone.View.extend({
 	 * @memberOf FormView
 	 */
 	 initialize: function(options){
-		 this.newFormViewTemplate = Handlebars.compile($("#newFormViewTemplate").html());
 		 this.showFormViewTemplate = Handlebars.compile($("#showFormViewTemplate").html());
+		 this.trFilesTemplate = Handlebars.compile($("#trFilesTemplate").html());
+		 
+		 Handlebars.registerPartial("trFilesTemplate", $("#trFilesTemplate").html());
 	 },
 	 events: {
 		 "change .formSlt" : "onChangeFormSlt",
@@ -455,9 +438,31 @@ var FormView = Backbone.View.extend({
 		} else {
 			json.model={};
 			// show input from
-			this.$el.html(this.newFormViewTemplate(json));	
+			//this.$el.html(this.newFormViewTemplate(json));	
 		}
 		
+		
+		$('#fileupload').fileupload({
+	        dataType: 'json',
+	 
+	        done: _.bind(function (e, data) {
+	            $.each(data.result, _.bind(function (index, file) {
+	            	var file = new App.Models.FileMeta(file);
+	            	this.model.get('files').add(file);
+	            	var json = {};
+	            	json.model = this.model.toJSON();
+	            	$('#filesTbl tbody').empty();
+	            	$('#filesTbl tbody').html(this.trFilesTemplate(json));
+	            },this)); 
+	        },this),	 
+	        progressall: function (e, data) {
+	            var progress = parseInt(data.loaded / data.total * 100, 10);
+	            $('#progress .bar').css(
+	                'width',
+	                progress + '%'
+	            );
+	        }
+		});
 		
 		return this;
 	}

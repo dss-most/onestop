@@ -98,7 +98,122 @@
 
 </script>
 
-<script id="formViewTemplate" type="text/x-handlebars-template">
+<script id="showFormViewTemplate" type="text/x-handlebars-template">
+<div class="col-md-12">
+	<form class="form-horizontal" role="form">
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<b><i class="fa fa-pencil-square-o"></i> คำร้องขอใบเสนอราคาทดสอบผลิตภัณฑ์</b>
+		</div>
+		<div class="panel-body">
+			<div class="row">
+				<div class="col-md-12 mainService">
+					<h2>คำร้องเลขที่ {{model.id}}</h2>
+				</div>
+			</div>
+			
+			<div class="row">
+				<div class="col-md-12 mainService">
+					<h2>ข้อมูลเพื่อการติดต่อกลับ</h2>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12">
+					{{txtInput model "customerName" "ชื่อผู้ขอใบเสนอราคา:" 2 10 "static"}}
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12">
+					{{txtInput model "companyName" "บริํษัท/หน่วยงาน:" 2 10 "static"}}
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-md-12">
+					{{txtInput model "address1" "ที่อยู่:" 2 10 "static"}}
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12">
+					{{txtInput model "address2" "" 2 10 "static"}}
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-6">
+					{{txtInput model "phone" "เบอร์โทรศัพท์:" 4 8 "static"}}
+				</div>
+				<div class="col-md-6">
+					{{txtInput model "fax" "เบอร์โทรสาร:" 4 8 "static"}}
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12">
+					{{txtInput model "email" "email:" 2 10 "static"}}
+				</div>
+			</div>
+
+
+			<div class="row">
+				<div class="col-md-12 mainService">
+					<h2>รายละเอียดผลิตภัณฑ์ที่ต้องการทดสอบ</h2>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12">
+					{{txtInput model "sampleDesc" "ลักษณะตัวอย่างที่จะส่งทดสอบ:" 2 10 "static"}}
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12">
+					<div class="form-group">
+    					<label for="hasSentBefore" class="col-sm-2 control-label">เคยส่งมาทดสอบ:</label>
+    					<div class="col-sm-10 form-inline">
+      						<label class="radio-inline">
+								{{#if model.hasSentBefore}}
+  									<input type="radio" class="formRdo" data-field="hasSentBefore" name="hasSentBeforeRdo" value="0" disabled> ไม่เคย
+								{{else}}
+									<input type="radio" class="formRdo" data-field="hasSentBefore" name="hasSentBeforeRdo" checked="checked" value="0" disabled> ไม่เคย
+								{{/if}}
+							</label>
+							<label class="radio-inline">
+								{{#unless model.hasSentBefore}}
+  									<input type="radio" class="formRdo" data-field="hasSentBefore" name="hasSentBeforeRdo" value="1" disabled> เคย หมายเลขปฎิบัติการหรือใบเสนอราคาที่อ้างอิง
+								{{else}}
+									<input type="radio" class="formRdo" data-field="hasSentBefore" name="hasSentBeforeRdo" checked="checked" value="1" disabled> เคย หมายเลขปฎิบัติการหรือใบเสนอราคาที่อ้างอิง
+								{{/unless}}
+							</label>
+						
+								<p id="referenceTxt" data-field="reference" class="form-control-static">{{model.reference}}</p>
+
+				    	</div>
+					</div>					
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12 mainService">
+					<h2>รายละเอียดการทดสอบหรือวิธีการที่ต้องการทดสอบ</h2>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12">
+					{{txtInput model "testMethod" "รายละเอียดการทดสอบ:" 2 10 "static"}}
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12">
+					{{txtInput model "remarks" "รายละเอียดอื่นๆ:" 2 10 "static"}}
+				</div>
+			</div>
+		</div>
+		<div class="panel-footer">
+			ท่านจะได้รับการติดต่อกลับภายใน 3 วันทำการ ทั้งนี้หากต้องการประสานกับเจ้าหน้าที่ กรุณาโทรศัพท์สอบถามได้ที่ CALL CENTER 0-2201-7000 <br/>โดยระบุหมายลขคำร้องขอใบเสนอราคาเลขที่ {{model.id}}
+		</div>
+	</div>
+</div>
+</script>
+
+
+<script id="newFormViewTemplate" type="text/x-handlebars-template">
 <div class="col-md-12">
 	<form class="form-horizontal" role="form">
 	<div class="panel panel-default">
@@ -134,7 +249,7 @@
 			</div>
 			<div class="row">
 				<div class="col-md-6">
-					{{txtInput model "phone" "เบอร์โทรศัพท์:" 4 8 "readwrite"}}
+					{{txtInput model "telephone" "เบอร์โทรศัพท์:" 4 8 "readwrite"}}
 				</div>
 				<div class="col-md-6">
 					{{txtInput model "fax" "เบอร์โทรสาร:" 4 8 "readwrite"}}
@@ -163,10 +278,10 @@
     					<label for="hasSentBefore" class="col-sm-2 control-label">เคยส่งมาทดสอบ:</label>
     					<div class="col-sm-10 form-inline">
       						<label class="radio-inline">
-  								<input type="radio" data-field="hasSentBefore" name="hasSentBeforeRdo" value="0"> ไม่เคย
+  								<input type="radio" class="formRdo" data-field="hasSentBefore" name="hasSentBeforeRdo" value="0"> ไม่เคย
 							</label>
 							<label class="radio-inline">
-  								<input type="radio" data-field="hasSentBefore" name="hasSentBeforeRdo" value="1"> เคย โปรดระบุหมายเลขปฎิบัติการหรือใบเสนอราคาที่อ้างอิง
+  								<input type="radio" class="formRdo" data-field="hasSentBefore" name="hasSentBeforeRdo" value="1"> เคย โปรดระบุหมายเลขปฎิบัติการหรือใบเสนอราคาที่อ้างอิง
 							</label>
 						
 								<input type="text" id="referenceTxt" data-field="reference" class="form-control formTxt"></input>
@@ -183,12 +298,42 @@
 			</div>
 			<div class="row">
 				<div class="col-md-12">
-					{{txtAreaInput model "testingDesc" "รายละเอียดการทดสอบ:" 2 10 "readwrite"}}
+					{{txtAreaInput model "testMethod" "รายละเอียดการทดสอบ:" 2 10 "readwrite"}}
 				</div>
 			</div>
 			<div class="row">
 				<div class="col-md-12">
-					{{txtAreaInput model "remark" "รายละเอียดอื่นๆ:" 2 10 "readwrite"}}
+					{{txtAreaInput model "remarks" "รายละเอียดอื่นๆ:" 2 10 "readwrite"}}
+				</div>
+			</div>
+
+			<div class="row">
+					<div class="col-md-12 mainService">
+						<h2>ขั้นตอนที่สี่: ระบุสถานที่ส่งตัวอย่างที่ต้องการ</h2>
+					</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12">
+					<div class="form-group">
+    					<label for="hasSentBefore" class="col-sm-2 control-label">เลือกสถานที่:</label>
+    					<div class="col-sm-10">
+	      						<label class="radio-inline">
+  									<input type="radio" class="formRdo" data-field="location" name="location" value="0"> กรมวิทยาศาสตร์บริการ (วศ.) ถ.พระรามที่ 6 กรุงเทพมหานคร
+								</label><br/>
+								<label class="radio-inline">
+  									<input type="radio" class="formRdo" data-field="location" name="location" value="1"> สถาบันวิจัยวิทยาศาสตร์และเทคโนโลยีแห่งประเทศ ไทย (วว.) ที่เทคโนธานี จ.ปุทมธานี
+								</label><br/>
+								<label class="radio-inline">
+  									<input type="radio" class="formRdo" data-field="location" name="location" value="1"> สถาบันวิจัยวิทยาศาสตร์และเทคโนโลยีแห่งประเทศ ไทย (วว.) ที่บางเขน จ. กรุงเทพมหานคร   
+								</label><br/>
+								<label class="radio-inline">
+  								<input type="radio" class="formRdo" data-field="location" name="location" value="1"> สถาบันวิจัยวิทยาศาสตร์และเทคโนโลยีแห่งประเทศ ไทย (วว.) ที่นิคมอุตสาหกรรมบางปู จ. สมุทรปราการ 
+								</label><br/>
+								<label class="radio-inline">
+  									<input type="radio" class="formRdo" data-field="location" name="location" value="1"> กรุณาเลือกสถานที่ให้ 
+								</label><br/>
+				    	</div>
+					</div>					
 				</div>
 			</div>
 		</div>
@@ -202,6 +347,8 @@
 
 
 <script type="text/javascript" th:inline="javascript">
+
+var e1;
 //<!--
 $( document ).ready(function() {
 	

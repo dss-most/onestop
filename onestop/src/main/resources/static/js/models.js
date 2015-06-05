@@ -38,4 +38,14 @@ App.Models.Rfq = Backbone.RelationalModel.extend({
 	urlRoot: appUrl('Rfq')
 });
 
+App.Pages.Rfqs = Backbone.PageCollection.extend({
+	model: App.Models.Rfq,
+	url: appUrl('Rfq/search')
+});
+
+App.Models.FileMeta = Backbone.RelationalModel.extend({
+	urlRoot: '/onestop/FILES'
+});
+
+
 })();

@@ -40,4 +40,32 @@ public class MainController {
 		return "testingService";
 	}
 	
+	@RequestMapping("/checkStatus")
+	public String checkStatus(Model model) {
+		log.debug("Entering : /testingService");
+	
+		
+		PageMenu menu = new PageMenu();
+		menu.setHomeMenu(true);
+		
+		model.addAttribute("menu", menu);
+		
+		return "checkStatus";
+	}
+	
+	
+	@RequestMapping("/admin/testingService")
+	public String adminTestingService(Model model) {
+		log.debug("Entering : /testingService");
+	
+		
+		PageMenu menu = new PageMenu();
+		menu.setHomeMenu(true);
+		
+		model.addAttribute("menu", menu);
+		
+		return "adminTestingService";
+	}
+	
+	
 }

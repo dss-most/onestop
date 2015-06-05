@@ -20,7 +20,7 @@ Handlebars.registerHelper("math", function(lvalue, operator, rvalue, options) {
 });
 
 Handlebars.registerHelper('formatNumber', function(number) {
-	return addCommas(number);
+	return __addCommas(number);
 });
 
 Handlebars.registerHelper('txtAreaInput', function(model, field, label, labelSize, fieldSize, state) {
@@ -46,9 +46,9 @@ Handlebars.registerHelper('txtAreaInput', function(model, field, label, labelSiz
 			"<div class='form-group'> \n" +
 			"	<label for='"+ field+"Txt' class='col-md-"+labelSize+" control-label'>"+label+"</label> \n" +
 			"	<div class='col-md-"+fieldSize+"'> \n" +
-			"	<textarea class='form-control' rows='6' name='"+field+"Txa'  id='"+field+"Txa' rows='10' data-field='"+field+"'>" +
+			"	<textarea class='form-control formTxa' rows='6' name='"+field+"Txa'  id='"+field+"Txa' rows='10' data-field='"+field+"'>" +
 			"" + aValue + 
-			"	</textarea>" +
+			"</textarea>" +
 			"	</div> \n" +
 			"</div>"; 
 	

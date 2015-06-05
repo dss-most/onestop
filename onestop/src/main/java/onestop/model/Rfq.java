@@ -2,6 +2,7 @@ package onestop.model;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -9,11 +10,16 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+
+import org.hibernate.annotations.Where;
+
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
@@ -86,7 +92,16 @@ public class Rfq implements Serializable {
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="Rfq_date")
 	private Date RfqDate;
-
+	
+	@Basic
+	@Column(name="Status")
+	private String Status;
+	
+	@OneToMany
+	@JoinColumn(name="domainId", referencedColumnName="Id")
+	@Where(clause="domain='Rfq'")
+	private List<FileMeta> files;
+	
 	public Long getId() {
 		return id;
 	}
@@ -198,6 +213,23 @@ public class Rfq implements Serializable {
 	public void setRemarks(String remarks) {
 		this.remarks = remarks;
 	}
+
+	public String getStatus() {
+		return Status;
+	}
+
+	public void setStatus(String status) {
+		Status = status;
+	}
+
+	public List<FileMeta> getFiles() {
+		return files;
+	}
+
+	public void setFiles(List<FileMeta> files) {
+		this.files = files;
+	}
+	
 	
 	
 }

@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="layout/mainLayout">
+<head>
+<title>MSTQ</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+	<div layout:fragment="content">
+		<div class="row"  style="margin-top:-40px;">
+			<ol class="breadcrumb">
+			  <li><a href="#" th:href="@{/}">Home</a></li>
+			  <li class="active">ทดสอบผลิตภัณฑ์</li>
+			</ol>
+		</div>
+	
+
+		<hr style="margin-top:-10px;"/>
+		
+		<div id="searchView" class="row">
+		</div>
+			
+		<div class="row" id="tableResultView">
+		</div>
+		
+		<div class="row" id="formView">
+		</div>		
+		
+		
+	</div>
+	
+	<div layout:fragment="pageScript">
+	
+<script type="text/javascript" src="../../static/pagejs/adminTestingService.js"
+			th:src="@{/static/pagejs/adminTestingService.js}"></script>
+										
+<script  id="searchViewTemplate" type="text/x-handlebars-template">
+<div class="panel panel-primary">
+<div class="panel-heading">
+ 	<h4 class="panel-title">ค้นหาข้อมูลการส่งทดสอบผลิตภัณฑ์</h4>
+</div>
+<div class="panel-body">
+	<form class="form-horizontal" role="form" id="searchForm">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="form-group">
+				    <label for="inputEmail3" class="col-sm-2 control-label">เลขทีคำร้องขอใบเสนอราคา</label>
+				    <div class="col-sm-10">
+				      <input type="text" class="form-control formTxt" id="id" 
+							placeholder="..." data-field="id" value="{{searchModel.id}}"/>
+				    </div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-12" style="text-align: center;">
+					<button type="button" class="btn btn-default" id="searchBtn">
+						<span class="glyphicon glyphicon-search"></span> ค้นหา</button>
+					<button type="button" class="btn btn-default" id="clearFormBtn">
+						<i class="fa fa-times-circle"></i> ล้างข้อมูลค้นหา</button>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>
+
+</script>
+
+<script  id="trFilesTemplate" type="text/x-handlebars-template"  th:inline="text">
+{{#each model.files}}
+	<tr>
+		<td style="text-align:center;">
+			<a href="#" class="fileDeleteLnk" data-id="{{id}}"><i class="fa fa-trash"></i></a>
+		</td>
+		<td>
+			<a href="/onestop/FILES/get/Rfq/{{../model.id}}/{{fileName}}">{{fileName}}</a>
+		</td>
+		<td>{{formatNumber fileSize}}</td>
+	</tr>
+{{/each}}
+</script>
+
+<script id="showFormViewTemplate" type="text/x-handlebars-template">
+<div class="col-md-12">
+	<form class="form-horizontal" role="form">
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<b><i class="fa fa-pencil-square-o"></i> คำร้องขอใบเสนอราคาทดสอบผลิตภัณฑ์</b>
+		</div>
+		<div class="panel-body">
+			<div class="row">
+				<div class="col-md-12 mainService">
+					<h2>คำร้องเลขที่ {{model.id}}</h2>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-md-12 mainService">
+					{{txtInput model "status" "เลขที่ใบเสนอราคา:" 2 10 "readwrite"}}
+				</div>
+			</div>
+
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<b>ไฟล์ทีเกี่ยวข้อง</b> 
+				</div>
+				<div class="panel-body">
+					<span class="btn btn-success fileinput-button">
+               			<i class="glyphicon glyphicon-plus"></i>
+                		<span>Add files...</span>
+    	           			<input id="fileupload" type="file" name="files[]" data-url="/onestop/FILES/upload/Rfq/{{model.id}}" multiple>
+        	    		</span>
+						 <div id="progress">
+						        <div style="width: 0%;"></div>
+    					</div>
+				</div>
+				<table class="table" id="filesTbl">
+					<thead>
+						<th style="width:40px;"></th>
+						<th>Filename</th>
+						<th style="width:200px;">Size (KB)</th>
+					</thead>
+					<tbody>
+						{{> trFilesTemplate}}
+					</tbody>
+				</table>
+			</div>
+			
+			<div class="row">
+				<div class="col-md-12 mainService">
+					<h2>ข้อมูลเพื่อการติดต่อกลับ</h2>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12">
+					{{txtInput model "customerName" "ชื่อผู้ขอใบเสนอราคา:" 2 10 "static"}}
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12">
+					{{txtInput model "companyName" "บริํษัท/หน่วยงาน:" 2 10 "static"}}
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-md-12">
+					{{txtInput model "address1" "ที่อยู่:" 2 10 "static"}}
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12">
+					{{txtInput model "address2" "" 2 10 "static"}}
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-6">
+					{{txtInput model "phone" "เบอร์โทรศัพท์:" 4 8 "static"}}
+				</div>
+				<div class="col-md-6">
+					{{txtInput model "fax" "เบอร์โทรสาร:" 4 8 "static"}}
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12">
+					{{txtInput model "email" "email:" 2 10 "static"}}
+				</div>
+			</div>
+
+
+			<div class="row">
+				<div class="col-md-12 mainService">
+					<h2>รายละเอียดผลิตภัณฑ์ที่ต้องการทดสอบ</h2>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12">
+					{{txtInput model "sampleDesc" "ลักษณะตัวอย่างที่จะส่งทดสอบ:" 2 10 "static"}}
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12">
+					<div class="form-group">
+    					<label for="hasSentBefore" class="col-sm-2 control-label">เคยส่งมาทดสอบ:</label>
+    					<div class="col-sm-10 form-inline">
+      						<label class="radio-inline">
+								{{#if model.hasSentBefore}}
+  									<input type="radio" class="formRdo" data-field="hasSentBefore" name="hasSentBeforeRdo" value="0" disabled> ไม่เคย
+								{{else}}
+									<input type="radio" class="formRdo" data-field="hasSentBefore" name="hasSentBeforeRdo" checked="checked" value="0" disabled> ไม่เคย
+								{{/if}}
+							</label>
+							<label class="radio-inline">
+								{{#unless model.hasSentBefore}}
+  									<input type="radio" class="formRdo" data-field="hasSentBefore" name="hasSentBeforeRdo" value="1" disabled> เคย หมายเลขปฎิบัติการหรือใบเสนอราคาที่อ้างอิง
+								{{else}}
+									<input type="radio" class="formRdo" data-field="hasSentBefore" name="hasSentBeforeRdo" checked="checked" value="1" disabled> เคย หมายเลขปฎิบัติการหรือใบเสนอราคาที่อ้างอิง
+								{{/unless}}
+							</label>
+						
+								<p id="referenceTxt" data-field="reference" class="form-control-static">{{model.reference}}</p>
+
+				    	</div>
+					</div>					
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12 mainService">
+					<h2>รายละเอียดการทดสอบหรือวิธีการที่ต้องการทดสอบ</h2>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12">
+					{{txtInput model "testMethod" "รายละเอียดการทดสอบ:" 2 10 "static"}}
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12">
+					{{txtInput model "remarks" "รายละเอียดอื่นๆ:" 2 10 "static"}}
+				</div>
+			</div>
+		</div>
+		<div class="panel-footer">
+			<button id="saveFormBtn" type="button" class="btn btn-default"><i class="fa fa-floppy-o"></i> บันทึกข้อมูลใบเสนอราคา</button>
+		</div>
+	</div>
+</div>
+</script>
+
+<script id="tableResultViewTemplate" type="text/x-handlebars-template" th:inline="text">
+<div class="panel panel-default">
+	<div class="panel-body">
+		<b>ผลการค้นหา</b>
+	</div>
+	<table class="table table-bordered table-hover">
+		<thead>
+			<tr>
+				<td style="width: 25px;text-align:center;"></td>
+				<td style="width: 200px;text-align:center;" class=""><b>เลขที่ใบคำร้อง</b></td>
+				<td style="width: 200px;text-align:center;" class=""><b>ชื่อผู้ขอรับบริการ</b></td>
+				<td style="width: 200px;text-align:center;" class=""><b>ชื่อบริษัท</b></td>
+			</tr>
+		</thead>
+		<tbody>
+			{{#each content}}
+			<tr data-id="{{id}}">
+				<td> <button type="button" class="btn btn-info btn-xs editBtn"><i class="fa fa-edit"> </i></button>
+				</td>
+				<td style="text-align:center;">{{id}}</td>
+				<td style="text-align:center;">{{customerName}}</td>
+				<td style="text-align:center;">{{companyName}}</td>
+			</tr>
+			{{/each}}
+		</tbody>
+	</table>
+	<form class="form-inline">
+	<div class="panel-footer">
+		<div class="row">
+			<div class="col-md-6">
+				1-15 จาก {{page.totalElements}} รายการ  
+			</div>
+			<div class="col-md-6" style="text-align: right;">
+				{{#unless page.first}}<button class="btn btn-default btn-sm btnPageNav" data-targetPage="{{page.prevPage}}" type="button"><i class="fa fa-chevron-left"></i></button>{{/unless}}
+				หน้าที่ <input class="form-control input-sm" size="2" type="text" id="pageNavTxt" data-value="{{page.pageNumber}}" value="{{page.pageNumber}}"></input> จาก {{page.totalPages}} หน้า
+				{{#unless page.last}}<button class="btn btn-default btn-sm btnPageNav" data-targetPage="{{page.nextPage}}" type="button"><i class="fa fa-chevron-right"></i></button>{{/unless}}
+			</div>
+		</div>
+	</div>
+	</form>
+</div>
+</script>
+
+<script type="text/javascript" th:inline="javascript">
+
+var e1;
+//<!--
+$( document ).ready(function() {
+	
+	//initialize things
+		
+		searchView = new SearchView({
+			el: "#searchView"
+		});
+		
+		tableResultView = new TableResultView({
+			el: "#tableResultView"
+		});
+		
+		formView = new FormView({
+			el: "#formView"
+		})
+		
+		
+		
+		appRouter = new AppRouter({
+			searchView: searchView,
+			tableResultView: tableResultView,
+			formView: formView
+		});
+		Backbone.history.start();
+
+});
+	
+	
+</script>
+			
+	</div>
+</body>
+</html>

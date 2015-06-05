@@ -8,14 +8,17 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import onestop.model.Rfq;
 import onestop.service.EntityService;
 import onestop.webui.ResponseJSend;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @RestController
 @RequestMapping("/REST/Rfq")
@@ -34,8 +37,25 @@ public class RfqRestController {
 
 	@RequestMapping(value= "/{id}", method = {RequestMethod.GET})
 	public Rfq findById(@PathVariable Long id) {
-		return entityService.findRfqById(id);
+		Rfq rfq= entityService.findRfqById(id);
+		logger.debug(rfq.getCustomerName());
+		
+		
+		return rfq;
 	}
+	
+	@RequestMapping(value= "/{id}/updateStatus", method = {RequestMethod.POST})
+	public Rfq updateStatus(@PathVariable Long id, @RequestParam String status) {
+		
+		Rfq rfq= entityService.findRfqById(id);
+		
+		rfq.setStatus(status);
+		
+		entityService.saveRfq(rfq);
+		
+		return rfq;
+	}
+	
 	
 	@RequestMapping(value= "/{id}", method = {RequestMethod.PUT})
 	public ResponseJSend<Rfq> updateById(@RequestBody JsonNode node
