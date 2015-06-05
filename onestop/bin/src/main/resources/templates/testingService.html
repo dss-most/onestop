@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="layout/mainLayout">
+<head>
+<title>MSTQ</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+	<div layout:fragment="content">
+		<div class="row"  style="margin-top:-40px;">
+			<ol class="breadcrumb">
+			  <li><a href="#" th:href="@{/}">Home</a></li>
+			  <li class="active">ทดสอบผลิตภัณฑ์</li>
+			</ol>
+		</div>
+	
+
+		<hr style="margin-top:-10px;"/>
+		
+		<div id="searchView" class="row">
+		</div>
+			
+		<div class="row" id="tableResultView">
+		</div>
+		
+		<div class="row" id="formView">
+		</div>		
+		
+		
+	</div>
+	
+	<div layout:fragment="pageScript">
+	
+<script type="text/javascript" src="../../static/pagejs/testingService.js"
+			th:src="@{/static/pagejs/testingService.js}"></script>
+										
+<script  id="searchViewTemplate" type="text/x-handlebars-template">
+<div class="panel panel-primary">
+<div class="panel-heading">
+ 	<h4 class="panel-title">ค้นหาข้อมูลการส่งทดสอบผลิตภัณฑ์</h4>
+</div>
+<div class="panel-body">
+	<form class="form-horizontal" role="form" id="searchForm">
+		<div class="row">
+			<div class="col-md-6">
+				<div class="form-group">
+				    <label for="inputEmail3" class="col-md-4 control-label">ประเภทเครือข่าย</label>
+				    <div class="col-md-8">
+				      <select class="form-control formSlt" id="networkTypeSlt" data-field="networkType">
+							<option value="0">กรุณาเลือก</option>
+							{{#each this.networkTypes}}
+								<option value="{{id}}" {{#if selected}}selected="selected"{{/if}}>{{description}}</option>
+							{{/each}}
+						</select>	
+				    </div>
+				</div>
+			</div>
+			<div class="col-md-6">
+				<div class="form-group">
+			    	<label for="inputEmail3" class="col-md-4 control-label">ประเภทหน่วยงาน</label>
+			    	<div class="col-md-8">
+			      		 <select class="form-control formSlt" id="orgTypeSlt"  data-field="orgType">
+							<option value="0">กรุณาเลือก</option>
+							{{#each this.orgTypes}}
+								<option value="{{id}}" {{#if selected}}selected="selected"{{/if}}>{{description}}</option>
+							{{/each}}
+						</select>	
+			    	</div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-12">
+				<div class="form-group">
+				    <label for="inputEmail3" class="col-sm-2 control-label">ชื่อหน่วยงาน</label>
+				    <div class="col-sm-10">
+				      <input type="text" class="form-control formTxt" id="orgNameTxt" 
+							placeholder="ระบุชื่อหน่วยงานที่ต้องการค้นหา..." data-field="orgName" value="{{searchModel.orgName}}"/>
+				    </div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-12" style="text-align: center;">
+					<button type="button" class="btn btn-default" id="newFormBtn">
+						<i class="fa fa-plus"></i> ส่งผลิตภัณฑ์ทดสอบใหม่</button>
+					<button type="button" class="btn btn-default" id="searchBtn">
+						<span class="glyphicon glyphicon-search"></span> ค้นหา</button>
+					<button type="button" class="btn btn-default" id="clearFormBtn">
+						<i class="fa fa-times-circle"></i> ล้างข้อมูลค้นหา</button>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>
+
+</script>
+
+<script id="formViewTemplate" type="text/x-handlebars-template">
+<div class="col-md-12">
+	<form class="form-horizontal" role="form">
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<b><i class="fa fa-pencil-square-o"></i> ขอใบเสนอราคาทดสอบผลิตภัณฑ์</b>
+		</div>
+		<div class="panel-body">
+			<div class="row">
+				<div class="col-md-12 mainService">
+					<h2>ขั้นตอนแรก: ข้อมูลเพื่อการติดต่อกลับ</h2>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12">
+					{{txtInput model "customerName" "ชื่อผู้ขอใบเสนอราคา:" 2 10 "readwrite"}}
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12">
+					{{txtInput model "companyName" "บริํษัท/หน่วยงาน:" 2 10 "readwrite"}}
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-md-12">
+					{{txtInput model "address1" "ที่อยู่:" 2 10 "readwrite"}}
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12">
+					{{txtInput model "address2" "" 2 10 "readwrite"}}
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-6">
+					{{txtInput model "phone" "เบอร์โทรศัพท์:" 4 8 "readwrite"}}
+				</div>
+				<div class="col-md-6">
+					{{txtInput model "fax" "เบอร์โทรสาร:" 4 8 "readwrite"}}
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12">
+					{{txtInput model "email" "email:" 2 10 "readwrite"}}
+				</div>
+			</div>
+
+
+			<div class="row">
+				<div class="col-md-12 mainService">
+					<h2>ขั้นตอนที่สอง: รายละเอียดผลิตภัณฑ์ที่ต้องการทดสอบ</h2>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12">
+					{{txtInput model "sampleDesc" "ลักษณะตัวอย่างที่จะส่งทดสอบ:" 2 10 "readwrite"}}
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12">
+					<div class="form-group">
+    					<label for="hasSentBefore" class="col-sm-2 control-label">เคยส่งมาทดสอบ:</label>
+    					<div class="col-sm-10 form-inline">
+      						<label class="radio-inline">
+  								<input type="radio" data-field="hasSentBefore" name="hasSentBeforeRdo" value="0"> ไม่เคย
+							</label>
+							<label class="radio-inline">
+  								<input type="radio" data-field="hasSentBefore" name="hasSentBeforeRdo" value="1"> เคย โปรดระบุหมายเลขปฎิบัติการหรือใบเสนอราคาที่อ้างอิง
+							</label>
+						
+								<input type="text" id="referenceTxt" data-field="reference" class="form-control formTxt"></input>
+
+						
+				    	</div>
+					</div>					
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12 mainService">
+					<h2>ขั้นตอนที่สาม: รายละเอียดการทดสอบหรือวิธีการที่ต้องการทดสอบ</h2>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12">
+					{{txtAreaInput model "testingDesc" "รายละเอียดการทดสอบ:" 2 10 "readwrite"}}
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12">
+					{{txtAreaInput model "remark" "รายละเอียดอื่นๆ:" 2 10 "readwrite"}}
+				</div>
+			</div>
+		</div>
+		<div class="panel-footer">
+			<button id="saveFormBtn" type="button" class="btn btn-default"><i class="fa fa-floppy-o"></i> ส่งคำร้องใบเสนอราคา</button>
+			<button id="clearFormBtn" type="button" class="btn btn-default"><i class="fa fa-times-circle"></i> ล้างข้อมูล</button>
+		</div>
+	</div>
+</div>
+</script>
+
+
+<script type="text/javascript" th:inline="javascript">
+//<!--
+$( document ).ready(function() {
+	
+	//initialize things
+		
+		searchView = new SearchView({
+			el: "#searchView"
+		});
+		
+		tableResultView = new TableResultView({
+			el: "#tableResultView"
+		});
+		
+		formView = new FormView({
+			el: "#formView"
+		})
+		
+		
+		
+		appRouter = new AppRouter({
+			searchView: searchView,
+			tableResultView: tableResultView,
+			formView: formView
+		});
+		Backbone.history.start();
+
+});
+	
+	
+</script>
+			
+	</div>
+</body>
+</html>

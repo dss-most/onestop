@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>DSS One Stop Service</title>
+
+    <!-- Bootstrap Core CSS -->
+	<link href="http://cdn.jsdelivr.net/webjars/bootstrap/3.3.4/css/bootstrap.min.css"
+	      th:href="@{/webjars/bootstrap/3.3.4/css/bootstrap.min.css}"
+	      rel="stylesheet" media="screen" />
+
+	<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css"
+		th:href="@{/webjars/font-awesome/4.3.0/css/font-awesome.min.css}" />
+	      
+	<!-- Custom CSS -->
+	<link href="../../static/css/main2.css"
+		th:href="@{/static/css/main2.css}" rel="stylesheet" />
+	
+	<link href="../../static/css/custom.css"
+		th:href="@{/static/css/custom.css}" rel="stylesheet" />
+
+</head>
+
+<body>
+        <!--[if lt IE 7]>
+            <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
+        <![endif]-->
+        
+
+    <header class="navbar navbar-inverse" role="banner">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <img width="50" style="float:left;"  src="/static/graphics/most_logo_big.png"  th:src="@{/static/graphics/most_logo_big.png}"/>
+				 <a class="navbar-brand" style="font-family: ThaiSansNeue-SemiBold; font-size:36px;padding-left:32px" href="index.html" th:href="@{/web/}">DSS One Stop Service</a>
+            </div>
+            <div class="collapse navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li th:class="${menu.homeMenu}?active"><a href="index.html" th:href="@{/web/}">Home</a></li>
+                    <li th:class="${menu.contactMenu}?active"><a href="contact.html" th:href="@{/web/contact}">ติดต่อ</a></li>
+                    <li th:class="${menu.serviceMenu}?active" class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">บริการ <i class="fa fa-angle-down"></i></a>
+                        <ul class="dropdown-menu">
+                            <li th:class="${menu.testingSubMenu}?active"><a href="#">ทดสอบผลิตภัณฑ์</a></li>
+                            <li th:class="${menu.calibrationSubMenu}?active"><a href="#">สอบเทียบเครื่องมือ</a></li>
+                            <li th:class="${menu.labSubMenu}?active"><a href="#">บริการห้องปฏิบัติการ</a></li>
+                            <li th:class="${menu.othersSubMenu}?active"><a href="#">บริการอื่นๆ</a></li>
+                            <li class="divider"></li>
+                            <li><a href="#">Privacy Policy</a></li>
+                            <li><a href="#">Terms of Use</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#" th:href="@{/login}">บัญชีผู้ใช้งาน</a></li>
+                   
+                </ul>
+            </div>
+        </div>
+    </header><!--/header-->
+
+		<!-- Our Clients -->
+	    <div class="section">
+	    	<div class="container">
+			
+			<div layout:fragment="content">
+				<!-- Content!!! -->
+				<h1 class="pageheader">Dashboard</h1>
+			
+				
+			
+				<!-- content -->
+			</div>
+		
+			</div>
+		</div>
+
+	    <!-- Footer -->
+	    <div class="footer">
+	    	<div class="container">
+			
+		    	<div class="row">
+				
+		    		<div class="col-footer col-md-4 col-xs-6">
+		    			<h3>Contact Us</h3>
+		    			<p class="contact-us-details">
+	        				<b>Address:</b> 123 Downtown Avenue, Manhattan, New York, United States of America<br/>
+	        				<b>Phone:</b> +1 123 45678910<br/>
+	        				<b>Fax:</b> +1 123 45678910<br/>
+	        				<b>Email:</b> <a href="mailto:info@yourcompanydomain.com">info@yourcompanydomain.com</a>
+	        			</p>
+		    		</div>				
+		    		<div class="col-footer col-md-4 col-xs-6">
+		    			<h3>Our Social Networks</h3>
+						<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam.</p>
+		    			
+		    		</div>
+		    		<div class="col-footer col-md-4 col-xs-6">
+		    			<h3>About Our Company</h3>
+		    				<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci.</p>
+		    		</div>
+
+		    	</div>
+		    	<div class="row">
+		    		<div class="col-md-12">
+		    			<div class="footer-copyright"><b>Build #</b><span th:utext="#{application.buildNumber}">buildTimestamp</span>-<span th:utext="#{application.buildTimestamp}">buildTimestamp</span></div>
+		    		</div>
+		    	</div>
+		    </div>
+	    </div>
+
+        
+		<!-- Bootstrap core JavaScript
+	    ================================================== -->
+		<!-- Placed at the end of the document so the webPage. load faster -->
+		<script src="http://cdn.jsdelivr.net/webjars/jquery/2.1.3/jquery.js"
+	        th:src="@{/webjars/jquery/2.1.3/jquery.js}"></script>
+		
+		<script src="http://cdn.jsdelivr.net/webjars/bootstrap/3.3.4/js/bootstrap.js"
+	        th:src="@{/webjars/bootstrap/3.3.4/js/bootstrap.js}"></script>
+	    
+	    <!-- twitter bootstrap typeahead -->
+		<script th:src="@{/webjars/typeaheadjs/0.11.1/typeahead.bundle.js}"></script>
+		<script type="text/javascript" th:src="@{/webjars/underscorejs/1.8.3/underscore-min.js}"></script>
+		<script type="text/javascript" src="../../static/js/backbone-1.1.2-4.js" th:src="@{/webjars/backbonejs/1.1.2/backbone-min.js}"></script>
+		<script type="text/javascript" src="../../static/js/backbone-relational-0.8.8.js" th:src="@{/webjars/backbone-relational/0.8.8/backbone.relational.js}"></script>
+		<script type="text/javascript" th:src="@{/webjars/handlebars/3.0.0-1/handlebars.js}"></script>
+		
+	 	<script type="text/javascript" th:src="@{/static/js/appUtil.js}"></script>
+	 	<script type="text/javascript" th:src="@{/static/js/models.js}"></script>
+	 
+		<form style="visibility: hidden" id="_logoutForm" method="post" action="#" th:action="@{/logout}"></form>
+		
+		<div layout:fragment="pageScript">
+		</div>		
+
+
+    </body>
+</html>

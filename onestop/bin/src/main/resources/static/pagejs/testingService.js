@@ -17,7 +17,6 @@ var AppRouter = Backbone.Router.extend({
 	},
 	routes: {
         "newRFQ" : "newForm",
-        "showRFQ/:id" : "showForm",
         "search" : "search",
         "OrganizationNetwork/:id" : "editForm",
         "*actions": "defaultRoute" // Backbone will try match the route above first
@@ -42,13 +41,6 @@ var AppRouter = Backbone.Router.extend({
     	// no table result
     	this.tableResultView.render();
     	
-    },
-    
-    showForm: function(id) {
-    	this.tableResultView.$el.empty();
-    	this.searchView.$el.empty();
-    	
-    	this.formView.showForm(id);
     },
     
     newForm: function() {
@@ -82,7 +74,6 @@ var SearchView = Backbone.View.extend({
     events: {
     	"change .formSlt": "onChangeFormSlt",
     	"change .formTxt" : "onChangeFormTxt",
-    	
     	
     	"click #newFormBtn" : "onClicknewFormBtn",
     	"click #searchBtn" : "onClickSearchBtn",
@@ -269,32 +260,15 @@ var FormView = Backbone.View.extend({
 	 * @memberOf FormView
 	 */
 	 initialize: function(options){
-		 this.newFormViewTemplate = Handlebars.compile($("#newFormViewTemplate").html());
-		 this.showFormViewTemplate = Handlebars.compile($("#showFormViewTemplate").html());
+		 this.formViewTemplate = Handlebars.compile($("#formViewTemplate").html());
 	 },
 	 events: {
-		 "change .formSlt" : "onChangeFormSlt",
-		 "change .formTxt" : "onChangeFormTxt",
-		 "change .formTxa" : "onChangeFormTxa",
-		 "change .formRdo" : "onChangeFormRdo",
-		 
-		 "actionclicked.fu.wizard #myWizard" : "onChangeMyWizard",
+		 "change .formSlt": "onChangeFormSlt",
+		 "change .formTxt" : "onChangeTxtSlt",
 		 
 		"click #saveFormBtn" : "onClickSaveFormBtn",
 		"click #backBtn" : "onClickBackBtn"
 			 
-	},
-	
-	onChangeMyWizard: function(e, data) {
-		if(data.step==3 && data.direction=='next') {
-			// this is the last step!
-			var json={};
-			
-			json.model = this.model.toJSON();
-			json.model.id = null;
-			this.$el.find('#showFormDiv').html(this.showFormViewTemplate(json));
-		
-		}
 	},
 	onClickSaveFormBtn: function(e) {
 		var validated = true;
@@ -334,39 +308,16 @@ var FormView = Backbone.View.extend({
 			success:_.bind(function(model, response, options) {
 				if(response.status != 'SUCCESS') {
 					alert(response.status + " :" + response.message);
-					
 				}
-				this.model.set('id', response.data.id);
+				this.model.set('id', response.data);
 				alert("บันทึกข้อมูลแล้ว");
-				appRouter.navigate("showRFQ/"+this.model.get('id'),{trigger: true});
 		},this)});
 	},
 	
 	onClickBackBtn: function(e) {
 		appRouter.navigate("search", {trigger: true});
 	},
-	onChangeFormRdo: function(e) {
-		var value = $(e.currentTarget).val();
-		var field=$(e.currentTarget).attr('data-field');
-		if(value=="0") {
-			this.model.set(field, false);
-		} else {
-			this.model.set(field, true);
-		}
-	},
-	onChangeFormTxa : function(e) {
-		var value = $(e.currentTarget).val();
-
-		if(value != null && value.length > 0) {
-			// reset error
-	    	$(e.currentTarget).parents('.form-group').removeClass('has-error');
-	    	$(e.currentTarget).parents('.form-group').find('.form-control-feedback').remove()
-		}
-		
-		var field=$(e.currentTarget).attr('data-field'); 
-		this.model.set(field, value);
-	},
-	onChangeFormTxt : function(e) {
+	onChangeTxtSlt : function(e) {
 		var value = $(e.currentTarget).val();
 		
 		if(value != null && value.length > 0) {
@@ -444,11 +395,13 @@ var FormView = Backbone.View.extend({
 	},
 	
 	
-	showForm: function(id) {
-		
-		console.log('id:' + id);
-		this.model = App.Models.Rfq.findOrCreate({id: id});
-		$.when(this.model.fetch()).done(_.bind(function(x) {
+	editForm: function(id) {
+		this.model = smt.Model.OrganizationNetwork.findOrCreate({id: id});
+		var zoneId=this.model.get('zone').get('id');
+		var provinceId = this.model.get('province').get('id');
+		$.when(this.provinces.fetch({url: appUrl('Province/findAllByZone/'+zoneId)}),
+				this.amphurs.fetch({url: appUrl('Province/'+provinceId +'/Amphur')}))
+				.done(_.bind(function(x) {
 			this.render();	
 		},this));
 		
@@ -462,17 +415,11 @@ var FormView = Backbone.View.extend({
 	},
 	render: function() {
 		var json={};
+		json.model={};
+		//json.model = this.model.toJSON();
 		
-		if(this.model.get('id') != null) {
-			json.model = this.model.toJSON();
-			this.$el.html(this.showFormViewTemplate(json));
-		} else {
-			json.model={};
-			// show input from
-			this.$el.html(this.newFormViewTemplate(json));	
-		}
+		this.$el.html(this.formViewTemplate(json));
 		
-		$('#myWizard').wizard();
 		return this;
 	}
 });
